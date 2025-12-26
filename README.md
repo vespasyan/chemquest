@@ -68,7 +68,7 @@ Vanilla JavaScript
 
 Bu repoyu bilgisayarına indir:
 
-git clone https://github.com/kullanici-adi/kimya-maceralari.git
+git clone https://github.com/vespasyan/chemquest.git
 
 
 Klasörün içine gir
