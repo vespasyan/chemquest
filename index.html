@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemQuest - 8. Sınıf Kimya Oyunu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Ana Konteyner -->
+    <div class="game-container">
+        
+        <!-- Başlangıç Ekranı -->
+        <div id="start-screen" class="screen active">
+            <div class="logo">
+                <h1>⚗️ ChemQuest</h1>
+                <p class="subtitle">8. Sınıf Kimya Oyunu</p>
+            </div>
+            
+            <div class="selection-box">
+                <h2>Konu Seç</h2>
+                <div class="topic-buttons">
+                    <button class="topic-btn" data-topic="karisimlar">🧪 Karışımlar</button>
+                    <button class="topic-btn" data-topic="atom">⚛️ Atom</button>
+                    <button class="topic-btn" data-topic="periyodik">📊 Periyodik Sistem</button>
+                    <button class="topic-btn" data-topic="asit-baz">🔬 Asit-Baz</button>
+                </div>
+            </div>
+
+            <div class="selection-box">
+                <h2>Zorluk Seç</h2>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn" data-difficulty="kolay">🌟 Kolay</button>
+                    <button class="difficulty-btn" data-difficulty="orta">⭐ Orta</button>
+                    <button class="difficulty-btn" data-difficulty="zor">💫 Zor</button>
+                </div>
+            </div>
+
+            <button id="start-game-btn" class="main-btn" disabled>Oyuna Başla!</button>
+        </div>
+
+        <!-- Oyun Ekranı -->
+        <div id="game-screen" class="screen">
+            <!-- Üst Bilgi Barı -->
+            <div class="game-header">
+                <div class="stat">
+                    <span class="stat-label">Can:</span>
+                    <span id="lives" class="stat-value">♥♥♥</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Soru:</span>
+                    <span id="question-number" class="stat-value">1/10</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Skor:</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <!-- Diyalog Kutusu (Undertale Tarzı) -->
+            <div class="dialogue-box">
+                <div class="character">
+                    <div class="character-sprite">👨‍🏫</div>
+                    <div class="character-name">Prof. Kimyon</div>
+                </div>
+                <div class="dialogue-text" id="dialogue-text"></div>
+            </div>
+
+            <!-- Soru Kutusu -->
+            <div class="question-box" id="question-box" style="display: none;">
+                <div class="question-text" id="question-text"></div>
+                
+                <!-- Çoktan Seçmeli Şıklar -->
+                <div id="multiple-choice" class="options-container" style="display: none;">
+                    <button class="option-btn" data-answer="A"></button>
+                    <button class="option-btn" data-answer="B"></button>
+                    <button class="option-btn" data-answer="C"></button>
+                    <button class="option-btn" data-answer="D"></button>
+                </div>
+
+                <!-- Yazmalı Cevap -->
+                <div id="text-answer" class="text-answer-container" style="display: none;">
+                    <input type="text" id="answer-input" class="answer-input" placeholder="Cevabını yaz...">
+                    <button id="submit-answer-btn" class="submit-btn">Gönder</button>
+                </div>
+            </div>
+
+            <!-- Geri Bildirim Kutusu -->
+            <div class="feedback-box" id="feedback-box" style="display: none;">
+                <div class="feedback-icon" id="feedback-icon"></div>
+                <div class="feedback-text" id="feedback-text"></div>
+                <div class="feedback-explanation" id="feedback-explanation"></div>
+                <button id="next-question-btn" class="main-btn">Sonraki Soru →</button>
+            </div>
+        </div>
+
+        <!-- Sonuç Ekranı -->
+        <div id="end-screen" class="screen">
+            <div class="end-content">
+                <h1 id="end-title">Oyun Bitti!</h1>
+                <div class="final-score">
+                    <div class="score-item">
+                        <span class="score-label">Final Skor:</span>
+                        <span id="final-score" class="score-value">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Doğru Cevaplar:</span>
+                        <span id="correct-answers" class="score-value">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Yanlış Cevaplar:</span>
+                        <span id="wrong-answers" class="score-value">0</span>
+                    </div>
+                </div>
+                <div class="end-message" id="end-message"></div>
+                <button id="restart-btn" class="main-btn">🔄 Tekrar Oyna</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

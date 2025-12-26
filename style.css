@@ -1,0 +1,619 @@
+/* ===============================================
+   Genel Ayarlar ve Reset
+   =============================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ===============================================
+   Ana Konteyner - Retro/Piksel Hissi
+   =============================================== */
+.game-container {
+    width: 100%;
+    max-width: 800px;
+    background: #2a2a3e;
+    border: 4px solid #1a1a2e;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Piksel efekti */
+.game-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ===============================================
+   Ekran Yönetimi
+   =============================================== */
+.screen {
+    display: none;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
+    min-height: 500px;
+}
+
+.screen.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===============================================
+   Başlangıç Ekranı
+   =============================================== */
+.logo {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.logo h1 {
+    font-size: 3rem;
+    color: #ffd700;
+    text-shadow: 3px 3px 0 #ff6b6b,
+                 6px 6px 0 #4ecdc4;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #a8dadc;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.selection-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #4ecdc4;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.selection-box h2 {
+    color: #4ecdc4;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.topic-buttons,
+.difficulty-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.topic-btn,
+.difficulty-btn {
+    background: #3d3d5c;
+    border: 2px solid #5555aa;
+    color: #fff;
+    padding: 15px;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.topic-btn:hover,
+.difficulty-btn:hover {
+    background: #4a4a6a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.topic-btn.selected,
+.difficulty-btn.selected {
+    background: #4ecdc4;
+    border-color: #45b8ac;
+    color: #1a1a2e;
+    font-weight: bold;
+}
+
+.main-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: 3px solid #ffd700;
+    color: #fff;
+    padding: 18px;
+    font-size: 1.3rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.main-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.main-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===============================================
+   Oyun Ekranı - Üst Bilgi Barı
+   =============================================== */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #4ecdc4;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    color: #a8dadc;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    color: #ffd700;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ===============================================
+   Diyalog Kutusu (Undertale Tarzı)
+   =============================================== */
+.dialogue-box {
+    background: #000;
+    border: 4px solid #fff;
+    border-radius: 0;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.character {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.character-sprite {
+    font-size: 3rem;
+    margin-right: 15px;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.character-name {
+    color: #ffd700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dialogue-text {
+    color: #fff;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    flex: 1;
+}
+
+/* Typewriter efekti için */
+.dialogue-text::after {
+    content: '▼';
+    color: #ffd700;
+    margin-left: 10px;
+    animation: blink 1s step-start infinite;
+}
+
+.dialogue-text.typing::after {
+    display: none;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ===============================================
+   Soru Kutusu
+   =============================================== */
+.question-box {
+    background: rgba(255, 255, 255, 0.08);
+    border: 3px solid #4ecdc4;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.question-text {
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.options-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.option-btn {
+    background: #3d3d5c;
+    border: 3px solid #5555aa;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 6px;
+    text-align: left;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.option-btn:hover:not(:disabled) {
+    background: #4a4a6a;
+    transform: translateX(10px);
+    border-color: #4ecdc4;
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+}
+
+.option-btn.correct {
+    background: #2ecc71;
+    border-color: #27ae60;
+    animation: correctPulse 0.5s ease;
+}
+
+.option-btn.wrong {
+    background: #e74c3c;
+    border-color: #c0392b;
+    animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* ===============================================
+   Yazmalı Cevap
+   =============================================== */
+.text-answer-container {
+    display: flex;
+    gap: 10px;
+}
+
+.answer-input {
+    flex: 1;
+    background: #3d3d5c;
+    border: 3px solid #5555aa;
+    color: #fff;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+}
+
+.answer-input:focus {
+    outline: none;
+    border-color: #4ecdc4;
+}
+
+.answer-input::placeholder {
+    color: #888;
+}
+
+.submit-btn {
+    background: #4ecdc4;
+    border: 3px solid #45b8ac;
+    color: #1a1a2e;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #45b8ac;
+    transform: scale(1.05);
+}
+
+/* ===============================================
+   Geri Bildirim Kutusu
+   =============================================== */
+.feedback-box {
+    background: rgba(0, 0, 0, 0.5);
+    border: 4px solid;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    animation: slideIn 0.5s ease;
+}
+
+.feedback-box.correct {
+    border-color: #2ecc71;
+}
+
+.feedback-box.wrong {
+    border-color: #e74c3c;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedback-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.feedback-text {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.feedback-explanation {
+    color: #a8dadc;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* ===============================================
+   Sonuç Ekranı
+   =============================================== */
+.end-content {
+    text-align: center;
+}
+
+#end-title {
+    color: #ffd700;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 3px 3px 0 #ff6b6b;
+}
+
+.final-score {
+    background: rgba(0, 0, 0, 0.3);
+    border: 3px solid #4ecdc4;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.score-label {
+    color: #a8dadc;
+    font-size: 1.2rem;
+}
+
+.score-value {
+    color: #ffd700;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.end-message {
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+/* ===============================================
+   Mobil Uyumluluk
+   =============================================== */
+@media (max-width: 768px) {
+    .game-container {
+        border-width: 2px;
+    }
+
+    .screen {
+        padding: 20px;
+        min-height: auto;
+    }
+
+    .logo h1 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .topic-buttons,
+    .difficulty-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .game-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .stat {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .dialogue-box {
+        padding: 15px;
+        min-height: 120px;
+    }
+
+    .character-sprite {
+        font-size: 2rem;
+    }
+
+    .character-name {
+        font-size: 1rem;
+    }
+
+    .dialogue-text {
+        font-size: 1rem;
+    }
+
+    .question-text {
+        font-size: 1.1rem;
+    }
+
+    .option-btn {
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+
+    .text-answer-container {
+        flex-direction: column;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+
+    #end-title {
+        font-size: 1.8rem;
+    }
+
+    .score-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+
+    .main-btn {
+        font-size: 1.1rem;
+        padding: 15px;
+    }
+
+    .question-text {
+        font-size: 1rem;
+    }
+
+    .option-btn {
+        font-size: 0.95rem;
+    }
+}
+
+/* ===============================================
+   Yükleme Animasyonu (Bonus)
+   =============================================== */
+@keyframes scan {
+    0% {
+        background-position: 0 -100vh;
+    }
+    35%, 100% {
+        background-position: 0 100vh;
+    }
+}
